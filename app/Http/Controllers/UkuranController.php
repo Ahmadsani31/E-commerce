@@ -73,7 +73,6 @@ class UkuranController extends Controller
     public function selectType($id)
     {
         $selectType = Ukuran::where('type_id', $id)->get();
-
         return json_encode($selectType);
     }
 }

@@ -10,11 +10,25 @@
 
 				<div class="col-md-5 col-md-offset-1">
 
-					<form method="post" action="#">
+					<form method="post" action="{{ route('singinStore') }}" enctype="multipart/form-data">
+                        @csrf
+                        @if(session('errors'))
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <strong>Something it's wrong!</strong> You should check in on some of those fields below.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                          </div>
+                        @endif
 						<h4 class="nomargin">Sign In</h4>
 						<p class="mt5 mb20">Login to access your account.</p>
 
-						<input type="text" name="username" class="form-control uname" placeholder="Username" required/>
+						<input type="text" name="username" @error('username') is-invalid @enderror" class="form-control uname" placeholder="Username" required/>
 						<input type="password" name="password" class="form-control pword" placeholder="Password" required/>
 						<a href="#"><small>Forgot Your Password?</small></a>
 						<button type="submit" class="btn btn-success btn-block">Sign In</button>
@@ -26,7 +40,7 @@
 
 					<div class="signin-info">
 						<div class="logopanel">
-							<h1><span>[</span> LookCare <span>]</span></h1>
+							<h1><span>[</span> Ecommerce <span>]</span></h1>
 						</div><!-- logopanel -->
 
 						<div class="mb20"></div>

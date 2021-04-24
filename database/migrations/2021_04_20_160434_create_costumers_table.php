@@ -15,12 +15,17 @@ class CreateCostumersTable extends Migration
     {
         Schema::create('costumers', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('birthday')->nullable();
+            $table->string('name');
             $table->string('email')->unique();
+            $table->string('username')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('nope');
+            $table->string('birthday');
+            $table->string('level')->nullable();
             $table->string('avatar')->nullable();
+            $table->rememberToken();
+
             $table->timestamps();
         });
     }

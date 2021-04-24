@@ -38,7 +38,7 @@ class ProductController extends Controller
                         return $img;
                     })
                     ->editColumn('category', function($data){
-                        $category = $data->category->category_nama;
+                        $category = $data->category->category_nama.'->'.$data->subCategory->sub_category_nama.'->'.$data->type->type_nama;
                         return $category;
                     })
 
@@ -82,7 +82,7 @@ class ProductController extends Controller
                     ->addColumn('action', function($data){
 
                         $action = '<a href="javascript:void(0)" id="btnShow" class="btn btn-info btn-xs show" data-id='.$data->id.'><i class="fa fa-eye"></i></a>
-                        <a href="javascript:void(0)" class="btn btn-warning btn-xs editCat" data-id='.$data->id.'><i class="fa fa-edit"></i></a>
+                        <a href="/admin/product/'.$data->id.'/edit" class="btn btn-warning btn-xs editProduct" data-id='.$data->id.'><i class="fa fa-edit"></i></a>
                         <button type="button" id="delProduct"  data-id="'.$data->id.'" class="btn btn-danger btn-xs delProduct"><i class="fa fa-eraser"></i></button>';
                             return $action;
                     })
@@ -179,9 +179,15 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Product $product,$id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $category = Category::all()->pluck('category_nama');
+        $sub_category = SubCategory::where('category_id',$product->cat_id)->pluck('sub_category_nama');
+        $type = Type::where('sub_cat_id',$product->sub_cat_id)->pluck('type_nama');
+        $productDetail = ProductDetail::where('product_id',$product->id)->get();
+        $ukuran = Ukuran::where('type_id', $product->type_id)->get();
+        return view('admin.product.edit',compact('product','category','sub_category','type','productDetail','ukuran'));
     }
 
     /**
@@ -252,11 +258,6 @@ class ProductController extends Controller
 
     }
 
-    public function detailUkuran($id)
-    {
-        $detail = ProductDetail::find($id);
-        return response()->json($detail);
-    }
 
     public function storeImage(Request $request)
     {

@@ -32,7 +32,7 @@
     <div class="dropdown-divider"></div>
 
           <li class="nav-item menu-open">
-            <a href="{{ route('home') }}" class="nav-link active">
+            <a href="{{ route('admin.home') }}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -70,10 +70,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('dataCostumer.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
             <p>
-                User
+                Data Costumer
                 <span class="right badge badge-danger">New</span>
             </p>
             </a>

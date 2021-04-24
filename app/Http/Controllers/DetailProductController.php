@@ -8,10 +8,20 @@ use Illuminate\Http\Request;
 
 class DetailProductController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        $product = Product::findOrFail(14);
+        $pro = Product::all();
+
+        $product = Product::findOrFail($id);
         $productDetail = ProductDetail::where('product_id',$product->id)->get();
-        return view('frontend.productDetail',compact('product','productDetail'));
+        // dd($productDetail);
+        return view('detail-product',compact('product','productDetail','pro'));
     }
+
+    public function detailUkuran($id)
+    {
+        $detail = ProductDetail::find($id);
+        return response()->json($detail);
+    }
+
 }

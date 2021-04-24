@@ -38,7 +38,6 @@
                         <th>ID</th>
                         <th>image</th>
                         <th>Category</th>
-                        <th>Type</th>
                         <th>Nama</th>
                         <th>Ukuran</th>
                         <th>Harga</th>
@@ -61,80 +60,6 @@
     </div>
 </section>
 
-<div class="modal fade" id="categoryModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="categoryModalLabel"></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-           <div class="row">
-               <div class="col-md-4">
-                   <div class="card-body">
-                <div class="col-12">
-                    <img src="{{ asset('assets/dist/img/prod-1.jpg') }}" class="product-image" alt="Product Image">
-                  </div>
-                  <div class="col-12 product-image-thumbs data">
-
-                  </div>
-                </div>
-               <p>Category -> sub category -> type baju</p>
-
-               </div>
-               <div class="col-md-8">
-                <h3 class="d-inline-block" id="nama"></h3>
-              <p id="des"></p>
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-default text-center">
-                  <input type="radio" name="color_option" id="color_option_b1" autocomplete="off">
-                  <span class="text-xl">S</span>
-                  <br>
-                  Small
-                </label>
-                <label class="btn btn-default text-center">
-                  <input type="radio" name="color_option" id="color_option_b2" autocomplete="off">
-                  <span class="text-xl">M</span>
-                  <br>
-                  Medium
-                </label>
-                <label class="btn btn-default text-center">
-                  <input type="radio" name="color_option" id="color_option_b3" autocomplete="off">
-                  <span class="text-xl">L</span>
-                  <br>
-                  Large
-                </label>
-                <label class="btn btn-default text-center">
-                  <input type="radio" name="color_option" id="color_option_b4" autocomplete="off">
-                  <span class="text-xl">XL</span>
-                  <br>
-                  Xtra-Large
-                </label>
-              </div>
-              <div class="bg-gray py-2 px-3 mt-4">
-                <h2 class="mb-0">
-                  $80.00
-                </h2>
-
-              </div>
-               </div>
-               <div class="col-md-12">
-
-               </div>
-           </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" id="btnSaveCategory" class="btn btn-primary">Submit</button>
-        </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
 
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
@@ -157,6 +82,11 @@
         });
     });
 
+      // BS-Stepper Init
+      document.addEventListener('DOMContentLoaded', function () {
+        window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+    })
+
     $(document).ready(function(){
         $('#product').DataTable({
             processing: true,
@@ -174,7 +104,6 @@
                         },orderable: false
                     },
                     {data: 'category', name: 'category'},
-                    {data: 'type', name: 'type'},
                     {data: 'nama', name: 'nama'},
                     {data: 'ukuran', name: 'ukuran'},
                     {data: 'harga', name: 'harga'},
@@ -198,14 +127,24 @@
 
 
 
-    $('body').on('click', '#btnShow', function () {
+    $('body').on('click', '.show', function () {
             var id = $(this).data('id');
              console.log(id);
              $.ajax({
-                    url: id +'/view',
+                    url: id +'/edit',
                     type:"GET",
                     dataType:"json",
                     success:function(data){
+                        window.location.href = "{{ url('admin.product.edit') }}";
+                    }
+                });
+
+        });
+
+        $('body').on('click', '.editProduct', function () {
+            var id = $(this).data('id');
+             console.log(id);
+
                         $('#categoryModalLabel').html("Detail Product");
                         $('#categoryModal').modal('show');
 
@@ -214,8 +153,6 @@
                         $('#des').text(data.des);
 
 
-                    }
-                });
 
         });
 

@@ -228,6 +228,7 @@
                     $('select[name="idSubCat"]').empty();
                     if(data == ''){
                         $('#idSubCat').append('<option disabled selected>--Data Tidak Ada--</option>');
+                        $('select[name="idType"]').empty();
                             }else{
                         $('#idSubCat').append('<option disabled selected>--Select One--</option>');
                             }

@@ -7,7 +7,8 @@
 <!--<![endif]-->
 
 <head>
-	<title>Home page | LookCare</title>
+	<title>Home page | Ecomerce Cloteh</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="">
@@ -60,6 +61,8 @@
   <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha512-rxThY3LYIfYsVCWPCW9dB0k+e3RZB39f23ylUYTEuZMDrN/vRqLdaCBo/FbvVT6uC2r0ObfPzotsfKF9Qc5W5g==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css" integrity="sha512-p4vIrJ1mDmOVghNMM4YsWxm0ELMJ/T0IkdEvrkNHIcgFsSzDi/fV7YxzTzb3mnMvFPawuIyIrHcpxClauEfpQg==" crossorigin="anonymous" />
 </head>
 
 <body class="style-14 index-2">
@@ -139,15 +142,9 @@
 				<div class="navy">
 					<ul>
 						<!-- Main menu -->
-						<li><a href="#">Home</a>
+						<li><a href="{{ url('/') }}    ">Home</a>
 							<!-- Submenu -->
-							<ul>
 
-								<li><a href="index.html">Home 1</a></li>
-								<li><a href="index-2.html"><span>Home 2</span></a></li>
-								<li><a href="index-3.html"><span>Home 3</span></a></li>
-
-							</ul>
 						</li>
 
 						<li><a href="#">Features</a>
@@ -250,21 +247,48 @@
 						</li>
 
 						<li><a href="about.html">About Us</a></li>
-						<li><a href="contact.html">Contact Us</a></li>
+						<li><a href="">Product Detail</a></li>
 					</ul>
 
 				</div>
 
                 <div class="top-bar">
-                    <div class="tb-language dropdown pull-right">
-                        <a href="#" class="btn btn-white " data-target="#" data-toggle="dropdown"><i class="fa fa-user"></i> Nama User <i class="fa fa-angle-down color"></i></a>
+                    @guest('costumer')
+                    <div class="tb-language  pull-right">
+                        <a href="{{ route('singin') }}" class="btn btn-white ">SingIn </i></a>
                         <!-- Dropdown menu with languages -->
-                        <ul class="dropdown-menu dropdown-mini" role="menu">
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Alamat</a></li>
-                            <li><a href="#">Log Out</a></li>
-                        </ul>
                     </div>
+
+                        @if (Route::has('singup'))
+                        <div class="tb-language  pull-right">
+                            <a href="{{ route('singup') }}" class="btn btn-white"> SingUp </a>
+                            <!-- Dropdown menu with languages -->
+                        </div>
+
+                        @endif
+                        @else
+                        <div class="tb-language dropdown pull-right">
+                            <a href="#" class="btn btn-white" data-target="#" data-toggle="dropdown"><i class="fa fa-user"></i> {{Auth::guard('costumer')->user()->name}}</a>
+                            <!-- Dropdown menu with languages -->
+                            <ul class="dropdown-menu dropdown-mini" role="menu">
+                                <li><a href="#"><i class="fa fa-home"> </i> Alamat</a></li>
+                                <li><a href="{{ route('shopping-cart') }}"><i class="fa fa-shopping-cart"> </i> Cart</a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"> </i> Pesanan</a></li>
+                                <div class="clearfix"><hr></div>
+                                <li><a class="dropdown-item" href="{{ route('costumer.logout') }}"
+                                    onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();">
+                                  <i class="fa fa-sign-out"></i> Logout
+                                 </a>
+
+                                 <form id="logout-form" action="{{ route('costumer.logout') }}" method="POST" class="d-none">
+                                     @csrf
+                                 </form></li>
+
+                            </ul>
+                        </div>
+                    @endguest
+
                     <!-- Shopping kart starts -->
                     <div class="tb-shopping-cart pull-right">
                         <!-- Link with badge -->
@@ -275,20 +299,7 @@
                             <h4><i class="fa fa-shopping-cart color"></i> Your Items</h4>
                             <ul class="list-unstyled">
                                 <!-- Item 1 -->
-                                <li>
-                                    <!-- Item image -->
-                                    <div class="cart-img">
-                                        <a href="#"><img src="{{ asset('frontend/img/ecommerce/view-cart/1.png') }}" alt="" class="img-responsive" /></a>
-                                    </div>
-                                    <!-- Item heading and price -->
-                                    <div class="cart-title">
-                                        <h5><a href="#">Premium Quality Shirt</a></h5>
-                                        <!-- Item price -->
-                                        <span class="label label-color label-sm">$1,90</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <!-- Item 2 -->
+
                                 <li>
                                     <div class="cart-img">
                                         <a href="#"><img src="{{ asset('frontend/img/ecommerce/view-cart/1.png') }}" alt="" class="img-responsive" /></a>
@@ -300,30 +311,17 @@
                                     <div class="clearfix"></div>
                                 </li>
                             </ul>
-                            <a href="#" class="btn btn-white btn-sm">View Cart</a> &nbsp; <a href="#" class="btn btn-color btn-sm">Checkout</a>
+                            <a href="{{ route('shopping-cart') }}" class="btn btn-white btn-sm">View Cart</a> &nbsp; <a href="{{ route('checkout') }}" class="btn btn-color btn-sm">Checkout</a>
                         </div>
                     </div>
                     <!-- Shopping kart ends -->
-
+                    @yield('cart')
                     <!-- Langauge starts -->
 
                     <!-- Language ends -->
 
                     <!-- Search section for responsive design -->
-                    <div class="tb-search pull-left">
-                        <a href="#" class="b-dropdown"><i class="fa fa-search square-2 rounded-1 bg-color white"></i></a>
-                        <div class="b-dropdown-block">
-                            <form>
-                                <!-- Input Group -->
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Type Something">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-color" type="button">Search</button>
-                                            </span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
                     <!-- Search section ends -->
 
                     <!-- Social media starts -->

@@ -2,7 +2,6 @@
 
 @section('homepage')
 <main class="main-container">
-
 	<!-- new collection directory -->
 	<section id="content-block" class="slider_area">
 		<div class="container">

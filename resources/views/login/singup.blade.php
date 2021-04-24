@@ -12,7 +12,7 @@
 
 					<div class="signup-info">
 						<div class="logopanel">
-							<h1><span>[</span> Lookcare <span>]</span></h1>
+							<h1><span>[</span> Ecommerce <span>]</span></h1>
 						</div><!-- logopanel -->
 
 						<div class="mb20"></div>
@@ -60,10 +60,7 @@
 						<h3 class="nomargin">Sign Up</h3>
 						<p class="mt5 mb20">Already a member? <a href="{{ route('singin') }}"><strong>Sign In</strong></a></p>
 
-						<label class="control-label">Name</label>
-						<div class="mb10">
-								<input type="text" name="nama" class="form-control" />
-						</div>
+
 						<div class="mb10">
 							<label class="control-label">Username</label>
 							<input type="text" name="username" class="form-control" />
@@ -73,37 +70,33 @@
 							<label class="control-label">Password</label>
 							<input type="password" name="password" class="form-control" />
 						</div>
-						<label class="control-label">Birthday</label>
-						<div class="row mb10">
-							<div class="col-sm-5">
-								<select class="form-control chosen-select" name="bulan" data-placeholder="Month">
-									<option selected disabled>Select Month</option>
-                                    <option value="1">January</option>
-									<option value="2">February</option>
-									<option value="3">March</option>
-									<option value="4">April</option>
-									<option value="5">May</option>
-									<option value="6">June</option>
-									<option value="7">July</option>
-									<option value="8">August</option>
-									<option value="9">September</option>
-									<option value="10">October</option>
-									<option value="11">November</option>
-									<option value="12">December</option>
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<input type="text" name="hari" class="form-control" placeholder="Day" />
-							</div>
-							<div class="col-sm-4">
-								<input type="text" name="tahun" class="form-control" placeholder="Year" />
-							</div>
+                        <div class="mb10">
+							<label class="control-label">Retype Password</label>
+                            <input type="password" class="form-control" @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password" data-eye>
 						</div>
-
-						<div class="mb10">
+                        <hr>
+                        <div class="mb10">
+                            <label class="control-label">Name</label>
+                            <input type="text" name="name" class="form-control" />
+                        </div>
+                        <div class="mb10">
 							<label class="control-label">Email Address</label>
 							<input type="email" name="email" class="form-control" />
 						</div>
+                        <div class="mb10">
+							<label class="control-label">No Telepon</label>
+							<input type="number" name="nope" class="form-control" />
+						</div>
+                        <div class="mb10">
+                            <label class="control-label">Birthday</label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" name="birthday" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+
 
 						<br />
 
@@ -121,5 +114,13 @@
 </main>
 
 <!-- date-range-picker -->
-
+<script src="{{ asset('frontend/js/vendor/jquery-1.10.2.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+<script>
+    $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: "yyyy-mm-dd",
+    });
+</script>
 @endsection

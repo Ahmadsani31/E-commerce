@@ -49,19 +49,19 @@
                                         @csrf
                                     <div class="form-group">
                                         <label for="inputName">Name Product</label>
-                                        <input type="text" id="inputName" name="nama_product" class="form-control" required>
+                                        <input type="text" id="inputName" name="nama_product" class="form-control" value="{{ $product->product_nama }}">
                                     </div>
                                     <div class="row">
                                         <div class="col md-6">
                                             <div class="form-group">
                                                 <label for="inputName">Bahan</label>
-                                                <input type="text" id="bahan" name="bahan" class="form-control" required>
+                                                <input type="text" id="bahan" name="bahan" class="form-control" value="{{ $product->bahan }}">
                                             </div>
                                         </div>
                                         <div class="col md-6">
                                             <div class="form-group">
                                                 <label for="inputName">Warna</label>
-                                                <input type="text" id="warna" name="warna" class="form-control" required>
+                                                <input type="text" id="warna" name="warna" class="form-control" value="{{ $product->warna }}">
                                             </div>
                                         </div>
                                     </div>
@@ -73,23 +73,31 @@
                                                 <div class="card-body">
                                                     <div class="form-group">
                                                         <label>Gender</label>
-                                                        <select id="idCat" name="idCat" class="form-control custom-select" style="width: 100%;" required>
-                                                            <option selected disabled>Select one</option>
-                                                            @foreach ($cat as $key => $item)
-                                                            <option value="{{ $key }}">{{ $item }}</option>
-                                                            @endforeach
+                                                        <select id="idCat" name="idCat" class="form-control custom-select" style="width: 100%;" >
+
+                                                            <option selected disabled>{{ $product->category->category_nama }}</option>
+                                                           @foreach ($category as $cat => $keyCat)
+                                                            <option value="{{ $cat }}" >{{ $keyCat }}</option>
+                                                           @endforeach
+
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Category</label>
                                                         <select id="idSubCat" name="idSubCat" class="form-control custom-select" style="width: 100%;" required>
-                                                            <option selected disabled>Select one</option>
+                                                            <option selected disabled>{{ $product->subCategory->sub_category_nama }}</option>
+                                                            @foreach ($sub_category as $sub => $sub_cat)
+                                                                <option value="{{ $sub }}">{{ $sub_cat }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Type Baju</label>
                                                         <select id="idType" name="idType" class="form-control custom-select" style="width: 100%;" required>
-                                                            <option selected disabled>Select one</option>
+                                                            <option selected disabled>{{ $product->type->type_nama }}</option>
+                                                            @foreach ($type as $ty => $tyNa)
+                                                                <option value="{{ $ty }}">{{ $tyNa }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -99,10 +107,15 @@
                                             <div class="card card-navy">
                                                 <div class="card-body">
                                                     <div class="form-group row" id="card_ukuran">
+                                                        @foreach ($productDetail as $detail)
+
                                                         <div class="col-md-3">
                                                             <label for="inputStatus">Ukuran</label>
                                                             <select id="idUkuran" name="idUkuran[]" class="form-control custom-select" required>
-                                                                <option selected disabled>Select one</option>
+                                                                <option selected disabled>{{ $detail->ukuran['size'] }}</option>
+                                                                @foreach ($ukuran as $uk)
+                                                                    <option value="{{ $uk->id }}">{{ $uk->size }}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-md-5">
@@ -110,7 +123,7 @@
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend"> <span class="input-group-text">Rp.</span>
                                                                 </div>
-                                                                <input type="text" id="rupiah" name="harga[]" class="form-control" required>
+                                                                <input type="text" id="rupiah" name="harga[]" class="form-control" value="{{ $detail->harga }}">
                                                                 <div class="input-group-append"> <span class="input-group-text">.00</span>
                                                                 </div>
                                                             </div>
@@ -118,15 +131,17 @@
                                                         <div class="col-md-3">
                                                             <label>Stock</label>
                                                             <div class="input-group">
-                                                                <input type="text" name="stock[]" class="form-control" required>
+                                                                <input type="text" name="stock[]" class="form-control" value="{{ $detail->stock }}">
                                                                 <div class="input-group-append"> <span class="input-group-text">Qty</span>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        @endforeach
+
                                                     </div>
                                                     <div class="field_product"></div>
                                                     <div class="col-md-12 pt-1">
-                                                        <button type="button" id="ukur" data-id="ukur" class="btn btn-info btn-sm btn-block add_field_product"> <i class="fa fa-plus"> ADD UKURAN</i>
+                                                        <button type="button" id="ukur" data-id="ukur" class="btn btn-info btn-sm btn-block add_field_product" value=""> <i class="fa fa-plus"> ADD UKURAN</i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -135,7 +150,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputDescription">Product Description</label>
-                                        <textarea id="summernote" name="description" class="form-control" rows="10" required></textarea>
+                                        <textarea id="summernote" name="description" class="form-control" rows="10" required>{{ $product->description }}</textarea>
                                     </div>
 
                                     <div class="card">
@@ -147,7 +162,7 @@
                                                         <i class="bg-warning">Pastikan Semua Data Sudah Di Isi Dengan Benar.</i>
                                                     </div>
                                                     <button type="submit" id="btnSaveProduct" class="btn btn-primary float-right mt-1">Next & Save Product</button>
-                                                    <button type="submit" class="btn btn-warning float-right mt-1 mr-2">Exit</button>
+                                                    <a href="{{ route('product.index') }}"class="btn btn-warning float-right mt-1 mr-2">Exit</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -293,7 +308,7 @@
 		if (x < maxField) {
 			x++; //Increment field counter
 			$('body').on('click', '#ukur', function () {
-				var id = $(this).val();
+				var id =  $(this).data("id");
 				console.log(id);
 				$.ajax({
 					url: id + '/show',

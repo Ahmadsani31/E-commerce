@@ -83,13 +83,11 @@
                                                     <div class="form-group">
                                                         <label>Category</label>
                                                         <select id="idSubCat" name="idSubCat" class="form-control custom-select" style="width: 100%;" required>
-                                                            <option selected disabled>Select one</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Type Baju</label>
                                                         <select id="idType" name="idType" class="form-control custom-select" style="width: 100%;" required>
-                                                            <option selected disabled>Select one</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -102,7 +100,6 @@
                                                         <div class="col-md-3">
                                                             <label for="inputStatus">Ukuran</label>
                                                             <select id="idUkuran" name="idUkuran[]" class="form-control custom-select" required>
-                                                                <option selected disabled>Select one</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-5">
@@ -218,6 +215,8 @@
     			type: "GET",
     			dataType: "json",
     			success: function (data) {
+                    $('select[name="idUkuran[]"]').empty();
+                    $('select[name="idType"]').empty();
     				$('select[name="idSubCat"]').empty();
     				if (data == '') {
     					$('#idSubCat').append('<option disabled selected>--Data Tidak Ada--</option>');
@@ -240,6 +239,8 @@
                     type:"GET",
                     dataType:"json",
                     success:function(data){
+                        console.log(data)
+                    $('select[name="idUkuran[]"]').empty();
                     $('select[name="idType"]').empty();
                     if(data == ''){
                         $('#idType').append('<option disabled selected>--Data Tidak Ada--</option>');
@@ -257,23 +258,22 @@
 
     $(document).ready(function(){
         $('select[name="idType"]').on('change', function(){
-            var ukuran = $(this).val();
+            var ukuran_id = $(this).val();
                 $.ajax({
-                    url: ukuran+ '/selectType',
+                    url: ukuran_id + '/selectType',
                     type:"GET",
                     dataType:"json",
                     success:function(data){
-                        $("#card_ukuran").show(500);
-                        console.log(data[0].type_id);
-                        $('#ukur').val(data[0].type_id);
-                    $('#idUkuran').empty();
+                        // console.log(data[0].type_id);
+                    $('select[name="idUkuran[]"]').empty();
                     if(data == ''){
                         $('#idUkuran').append('<option disabled selected>--Data Tidak Ada--</option>');
                             }else{
                         $('#idUkuran').append('<option disabled selected>--Select One--</option>');
                             }
-                        $.each(data, function(index, subcatObj){
-                            $('#idUkuran').append('<option value="'+ subcatObj.id +'">'+ subcatObj.size +'</option>');
+                        $('#ukur').val(data[0].type_id);
+                        $.each(data, function(key, value){
+                            $('select[name="idUkuran[]"]').append('<option value="'+ value.id +'">'+ value.size +'</option>');
                         });
                     }
                 });
@@ -312,7 +312,37 @@
 					}
 				});
 			});
-			$(wrapper).append('<div id="row' + x + '">' + '<div class="form-group row">' + '<div class="col-md-3">' + '<label>Ukuran</label>' + '<select id="data' + x + '" name="idUkuran[]" class="form-control custom-select" required>' + '<option selected disabled>Select one</option>' + '</select>' + '</div>' + '<div class="col-md-5">' + '<label>Harga</label>' + '<div class="input-group">' + '<div class="input-group-prepend">' + '<span class="input-group-text">Rp.</span>' + '</div>' + '<input type="text" id="rupiah' + x + '" name="harga[]" class="form-control" required>' + '<div class="input-group-append">' + '<span class="input-group-text">.00</span>' + '</div>' + '</div>' + '</div>' + '<div class="col-md-3">' + '<label>Stock</label>' + '<div class="input-group">' + '<input type="text" name="stock[]" class="form-control" required>' + '<div class="input-group-append">' + '<span class="input-group-text">Qty</span>' + '</div>' + '</div>' + '</div>' + '<div class="col-md-1 pt-4">' + '<button type="button" id="' + x + '" class="btn btn-danger btn-sm mt-2 remove_field_product">' + '<i class="fa fa-minus"></i>' + '</button>' + '</div>' + '</div>' + '</div>'); //Add field html
+			$(wrapper).append('<div id="row' + x + '">'
+                            + '<div class="form-group row">'
+                            + '<div class="col-md-3">'
+                            + '<label>Ukuran</label>'
+                            + '<select id="data' + x + '" name="idUkuran[]" class="form-control custom-select" required>'
+                            + '<option selected disabled>Select one</option>'
+                            + '</select>'
+                            + '</div>'
+                            + '<div class="col-md-5">'
+                            + '<label>Harga</label>'
+                            + '<div class="input-group">' + '<div class="input-group-prepend">' + '<span class="input-group-text">Rp.</span>' + '</div>'
+                            + '<input type="text" id="rupiah' + x + '" name="harga[]" class="form-control" required>'
+                            + '<div class="input-group-append">' + '<span class="input-group-text">.00</span>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="col-md-3">'
+                            + '<label>Stock</label>'
+                            + '<div class="input-group">'
+                            + '<input type="text" name="stock[]" class="form-control" required>'
+                            + '<div class="input-group-append">' + '<span class="input-group-text">Qty</span>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="col-md-1 pt-4">'
+                            + '<button type="button" id="' + x + '" class="btn btn-danger btn-sm mt-2 remove_field_product">'
+                            + '<i class="fa fa-minus"></i>'
+                            + '</button>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'); //Add field html
 			$('#rupiah' + x + '').mask('#,##0', {
 				reverse: true
 			});
@@ -418,7 +448,10 @@ Dropzone.options.myDropzone = {
 		myDropzone = this; // closure
 		submitButton.addEventListener("click", function () {
 			myDropzone.processQueue(); // Tell Dropzone to process all queued files.
-            window.location.href = "{{ route('product.index') }}";
+            setTimeout(function() {
+                window.location.href = "{{ route('product.index') }}";
+            }, 1500);
+
 		});
 		// You might want to show the submit button only when
 		// files are dropped here:
